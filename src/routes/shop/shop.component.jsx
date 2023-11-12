@@ -2,6 +2,9 @@ import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
+import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.util";
+
+
 import CategoriesPreview from "../categories-preview/categories-preview.component";
 import Category from "../category/category.component";
 
