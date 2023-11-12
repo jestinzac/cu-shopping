@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# E-commerce website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Click to redirect to the website <a href="https://urbanapparel-cushop.netlify.app" target="_blank">Urban Apparel</a>
 
 ## Available Scripts
 
