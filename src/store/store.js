@@ -4,19 +4,22 @@ import { rootReducer } from "./root-reducer";
 //import logger from 'redux-logger';
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import thunk from "redux-thunk";
 
 import customLoggerMiddleware from "./common/middleware/custom-logger";
 
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["user"],
+  whitelist: ["cart"],
+  //blacklist: ["user"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const middleWares = [
   process.env.NODE_ENV !== "production" && customLoggerMiddleware,
+  thunk,
 ].filter(Boolean);
 /**
  * 2 === 3 && { a: 'string' } => false
