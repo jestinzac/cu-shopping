@@ -1,6 +1,6 @@
 # E-commerce website
 
-Click to redirect to the website [Urban Apparel](https://urbanapparel-cushop.netlify.app)
+Click to redirect to the website <a href="https://urbanapparel-cushop.netlify.app" target="_blank">Urban Apparel</a>
 
 ## Available Scripts
 

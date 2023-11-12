@@ -1,17 +1,20 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import { CategoriesContext } from "../../contexts/categories.context";
+import { selectCategoriesMap } from "../../store/categories/categories.selector";
 import ProductCard from "../../components/product-card/product-card.component";
 
 import "./category.styles.scss";
 
 const Category = () => {
   const { category } = useParams();
-  const { categoriesMap } = useContext(CategoriesContext);
+  //console.log("render/re-rendering category component")
+  const categoriesMap = useSelector(selectCategoriesMap); // selector, runs every time the state object has updated in the root reducer.
   const [products, setProducts] = useState(categoriesMap[category]); // components replies on async fetch code, we need some safe guards in #20
 
   useEffect(() => {
+    //console.log("effect fired call")
     setProducts(categoriesMap[category]);
   }, [category, categoriesMap]);
 

@@ -1,11 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.scss";
-import App from "./App";
-import { UserProvider } from "./contexts/user.context";
-import { CategoriesProvider } from "./contexts/categories.context";
-import { CartProvider } from "./contexts/cart.context";
 import reportWebVitals from "./reportWebVitals";
+import { PersistGate } from "redux-persist/integration/react";
+
+import { Provider } from "react-redux";
+
+import { store, persister } from "./store/store";
+
+import App from "./App";
+
+import "./index.scss";
 
 // it looks like an unknown prop is being sent through to the DOM - https://github.com/styled-components/styled-components/issues/4049
 import { StyleSheetManager } from "styled-components";
@@ -15,20 +19,18 @@ import { BrowserRouter } from "react-router-dom"; //generic router, in-order to 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <StyleSheetManager
-      shouldForwardProp={() => true}
-      disableVendorPrefixes={false}
-    >
-      <BrowserRouter>
-        <UserProvider>
-          <CategoriesProvider>
-            <CartProvider>
-              <App />
-            </CartProvider>
-          </CategoriesProvider>
-        </UserProvider>
-      </BrowserRouter>
-    </StyleSheetManager>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persister}>
+        <StyleSheetManager
+          shouldForwardProp={() => true}
+          disableVendorPrefixes={false}
+        >
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </StyleSheetManager>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 
