@@ -1,4 +1,5 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import {
   createAuthUserWithEmailAndPassword,
@@ -7,7 +8,7 @@ import {
 
 import FormInput from "../../components/form-input/form-input.component";
 import Button from "../../components/button/button.component";
-//import { UserContext } from "../../context/user.context"
+import { signUpStart } from "../../store/user/user.action";
 
 import "./sign-up-form.styles.scss";
 
@@ -19,10 +20,9 @@ const defaultFormFields = {
 };
 
 const SignUpForm = () => {
+  const dispatch = useDispatch();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
-
-  //const { setCurrentUser } = useContext(UserContext);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -42,12 +42,13 @@ const SignUpForm = () => {
     }
 
     try {
-      const response = await createAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      //setCurrentUser(response.user);
-      await createUserDocumentFromAuth(response.user, { displayName });
+      // const response = await createAuthUserWithEmailAndPassword(
+      //   email,
+      //   password
+      // );
+      // //setCurrentUser(response.user);
+      // await createUserDocumentFromAuth(response.user, { displayName });
+      dispatch(signUpStart(email, password, displayName))
       resetFormFields();
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {

@@ -1,12 +1,15 @@
 import { compose, createStore, applyMiddleware } from "redux";
 
 import { rootReducer } from "./root-reducer";
-//import logger from 'redux-logger';
+import logger from 'redux-logger';
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-import thunk from "redux-thunk";
+//import thunk from "redux-thunk";
+import createSagaMiddleware from "redux-saga";
 
-import customLoggerMiddleware from "./common/middleware/custom-logger";
+import { rootSaga } from "./root-saga";
+
+//import customLoggerMiddleware from "./common/middleware/custom-logger";
 
 const persistConfig = {
   key: "root",
@@ -17,9 +20,12 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+const sagaMiddleware = createSagaMiddleware()
+
 const middleWares = [
-  process.env.NODE_ENV !== "production" && customLoggerMiddleware,
-  thunk,
+  process.env.NODE_ENV !== "production" && logger,
+  //thunk,
+  sagaMiddleware,
 ].filter(Boolean);
 /**
  * 2 === 3 && { a: 'string' } => false
@@ -37,5 +43,7 @@ export const store = createStore(
   undefined,
   composedEnhancers
 );
+
+sagaMiddleware.run(rootSaga);
 
 export const persister = persistStore(store); // Persist and rehydrate a redux store

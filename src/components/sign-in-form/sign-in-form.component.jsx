@@ -1,4 +1,5 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import {
   signInWithGooglePopup,
@@ -7,7 +8,7 @@ import {
 
 import FormInput from "../form-input/form-input.component";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
-//import { UserContext } from "../../contexts/user.context";
+import { googleSignInStart, emailSignInStart } from "../../store/user/user.action"
 
 import "./sign-in-form.styles.scss";
 
@@ -17,10 +18,9 @@ const defaultFormFields = {
 };
 
 const SignInForm = () => {
+  const dispatch = useDispatch();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
-
-  //const { setCurrentUser } = useContext(UserContext);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -34,10 +34,11 @@ const SignInForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
+      // await signInAuthUserWithEmailAndPassword(
+      //   email,
+      //   password
+      // );
+      dispatch(emailSignInStart(email, password))
       resetFormFields();
     } catch (error) {
       // if (error.code === "auth/wrong-password") {
@@ -50,7 +51,8 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    await signInWithGooglePopup();
+    //await signInWithGooglePopup();
+    dispatch(googleSignInStart())
   };
 
   return (

@@ -10,21 +10,24 @@ import CheckOut from "./routes/checkout/checkout.component";
 import {
   onAuthStateChangedListener,
   createUserDocumentFromAuth,
+  getCurrentUser,
 } from "./utils/firebase/firebase.util";
-import { setCurrentUser } from "./store/user/user.action";
+import { checkUserSession } from "./store/user/user.action";
 
 const App = () => {
   const dispatch = useDispatch(); // There's only ever one instance of it, so it doesn't change at all and not required to pass as useEffect dependencies
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => {
+    //getCurrentUser().then(user => console.log(user))
+    dispatch(checkUserSession())
+    /*const unsubscribe = onAuthStateChangedListener((user) => {
       if (user) {
         createUserDocumentFromAuth(user);
       }
       dispatch(setCurrentUser(user));
     });
 
-    return unsubscribe; // cleanup actual method, this will remove observer and in turn will trigger complete state of onAuthStateChanged automatically
+    return unsubscribe;*/ // cleanup actual method, this will remove observer and in turn will trigger complete state of onAuthStateChanged automatically
   }, []);
 
   return (

@@ -103,7 +103,7 @@ export const createUserDocumentFromAuth = async (
   }
 
   // if user data exists, create
-  return userDocRef;
+  return userSnapshot;
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -131,4 +131,16 @@ export const signOutUser = async () => await signOut(auth);
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback); //observer pattern, its stream - onAuthStateChanged(auth, callback, errorCallback, completedCallback);
 
-
+// convert from a observable listener(App.js), into promise based function call here
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth)
+      },
+      reject
+    )
+  })
+}
